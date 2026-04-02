@@ -75,6 +75,5 @@ The training setup also uses monitoring of gradient norms and includes stochasti
 │   └── SDE_GAN_utils_copy.py
 ├── thesis/
 │   └── Thesis_PaolaPinna_284961-2 2.pdf
-├── results/
 ├── README.md
 └── requirements.txt
