@@ -132,19 +132,49 @@ The implementation separates the reusable model components from the experimental
 
 ## Evaluation
 
-The project evaluates the SDE-GAN by comparing real and generated financial trajectories rather than relying on a single prediction metric.
+The SDE-GAN is evaluated by comparing real and generated financial trajectories at both **distributional** and **temporal** levels rather than relying on a single forecasting metric.
 
-The analysis focuses on whether the generated data reproduce important characteristics of the original series, including:
+The analysis includes:
 
-- the distribution of returns,
-- volatility behavior,
-- temporal dependence,
-- trajectory-level behavior,
-- performance on data outside the training period.
+- Maximum Mean Discrepancy (**MMD²**),
+- Kolmogorov-Smirnov (**KS**) statistics,
+- Wasserstein distance,
+- empirical moments and volatility,
+- kernel density estimates,
+- autocorrelation functions (**ACF**) and ACF mean-squared error,
+- qualitative comparison of generated and real paths.
 
-The notebook contains the full experimental workflow, diagnostic plots and comparison of generated and real trajectories. The thesis provides the complete interpretation of these experiments and discusses both the strengths and limitations of the learned stochastic process.
+Evaluation is performed separately on training and unseen test data to assess both fidelity and generalization.
 
-Because this is a **generative time-series model**, evaluation is primarily distributional and path-based rather than based on standard forecasting accuracy.
+---
+
+## Results
+
+The experiments show that the Neural SDE-GAN is able to generate **diverse, non-collapsed financial trajectories** whose return distributions remain close to those observed in the real S&P 500 series.
+
+### Quantitative summary
+
+| Metric | Training data | Test data |
+| --- | ---: | ---: |
+| MMD² | ≈ **0.0020** | ≈ **0.0067** |
+| Mean KS statistic | ≈ **0.051** | — |
+| Mean Wasserstein distance | ≈ **0.12** | — |
+| Generated volatility (σ) | close to empirical scale | ≈ **0.70–1.01** |
+| Real volatility (σ) | — | ≈ **1.34–1.36** |
+
+The low training-set MMD², KS and Wasserstein values indicate good agreement between the empirical and generated return distributions. On unseen data, the MMD² remains small, showing that the learned stochastic process retains meaningful distributional structure beyond the training sample.
+
+### Temporal behavior
+
+The generated series also achieve **low ACF mean-squared error**, indicating that short-range temporal dependence is reproduced reasonably well. Qualitative trajectory inspection did not reveal mode or trajectory collapse: the generator produces visibly different stochastic paths rather than repeatedly reproducing a small set of patterns.
+
+### Generalization and limitations
+
+The main difference on the test period is a tendency to **underestimate volatility**, particularly during more turbulent market conditions. Generated test trajectories show standard deviations of roughly **0.70–1.01**, compared with about **1.34–1.36** for the corresponding real data.
+
+Overall, the model captures a substantial part of the **distributional shape, temporal structure and path variability** of the financial returns while remaining less accurate for extreme volatility regimes. This is consistent with the goal of the project: learning a realistic stochastic trajectory distribution rather than producing deterministic point forecasts.
+
+The notebook contains the full experimental workflow, plots and diagnostics, while the thesis provides the complete interpretation and discussion of these results.
 
 ---
 
