@@ -132,7 +132,11 @@ The implementation separates the reusable model components from the experimental
 
 ## Evaluation
 
-The project evaluates the SDE-GAN by comparing real and generated trajectories through distributional and temporal metrics, including **MMD², KS statistics, Wasserstein distance, volatility and autocorrelation**.
+The model is evaluated on both training and unseen test data using complementary distributional and temporal metrics.
+
+The analysis includes comparisons of log-return distributions and moments, autocorrelation structure, MMD², Kolmogorov-Smirnov statistics, Wasserstein distance, and visual inspection of generated trajectories.
+
+Since the goal is realistic time-series generation rather than point forecasting, evaluation focuses on how well the synthetic paths reproduce the statistical properties, temporal behavior and diversity of the real data.
 
 ---
 
@@ -140,7 +144,9 @@ The project evaluates the SDE-GAN by comparing real and generated trajectories t
 
 The model achieved **MMD² ≈ 0.0020 on the training data** and **≈ 0.0067 on unseen test data**, indicating that the generated return distributions remain close to the real S&P 500 data and that the learned process generalizes reasonably well beyond the training sample.
 
-The **KS, Wasserstein and autocorrelation analyses** also showed good agreement between real and synthetic trajectories, with no evidence of trajectory collapse. The main limitation observed on the test period was a tendency to **underestimate volatility during more turbulent market conditions**.
+The KS, Wasserstein and autocorrelation analyses also showed good agreement between real and synthetic data. Visual inspection of the generated paths confirmed that the model produces diverse trajectories without evidence of trajectory collapse.
+
+The main limitation observed on the test period was a tendency to underestimate volatility in the higher-volatility regime, while still preserving the overall distributional and temporal structure of the real data.
 
 Overall, the results suggest that the Neural SDE-GAN successfully captures important **distributional and temporal properties** of financial returns while generating diverse stochastic trajectories.
 
